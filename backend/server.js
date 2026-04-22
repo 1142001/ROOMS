@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://rooms-2-q0os.onrender.com",
+  origin: "https://rooms-2-q0os.onrender.com/",
   credentials: true
 }));
 
