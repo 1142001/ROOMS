@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: "https://rooms-beta.vercel.app",
+  origin: ["https://rooms-beta.vercel.app", "http://localhost:5173"],
   credentials: true
 }));
 
