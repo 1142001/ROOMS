@@ -26,4 +26,8 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log(err));
 
+  app.get("/", (req, res) => {
+    res.send("Welcome to the Rooms Booking API");
+  });
+
 app.listen(5001, () => console.log("🚀 Server running on 5001"));
