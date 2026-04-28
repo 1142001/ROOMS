@@ -3,11 +3,17 @@ import { loginUser } from "../api";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [data, setData] = useState({ email: "", password: "" });
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  });
+
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    console.log("LOGIN DATA:", data); // 🔥 DEBUG
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    console.log("LOGIN DATA:", data);
 
     if (!data.email || !data.password) {
       return alert("Enter email & password");
@@ -16,46 +22,42 @@ export default function Login() {
     try {
       const res = await loginUser(data);
 
-      console.log("RESPONSE:", res.data); // 🔥 DEBUG
+      console.log("LOGIN RESPONSE:", res.data);
 
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
       alert("Login success ✅");
-
-      navigate("/"); // redirect to home
-
+      navigate("/");
     } catch (err) {
-      console.log("LOGIN ERROR:", err.response?.data);
+      console.log("LOGIN ERROR:", err.response?.data || err.message);
       alert(err.response?.data || "Login failed ❌");
     }
   };
 
   return (
     <div className="form-container">
-      <div className="form-box">
+      <form className="form-box" onSubmit={handleLogin}>
         <h2>Login</h2>
 
         <input
+          type="email"
           placeholder="Email"
           value={data.email}
-          onChange={(e) =>
-            setData({ ...data, email: e.target.value })
-          }
+          onChange={(e) => setData({ ...data, email: e.target.value })}
         />
 
         <input
           type="password"
           placeholder="Password"
           value={data.password}
-          onChange={(e) =>
-            setData({ ...data, password: e.target.value })
-          }
+          onChange={(e) => setData({ ...data, password: e.target.value })}
         />
 
-        <button className="btn" onClick={handleLogin}>
+        <button className="btn" type="submit">
           Login
         </button>
-      </div>
+      </form>
     </div>
   );
 }
