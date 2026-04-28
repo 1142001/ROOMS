@@ -11,23 +11,33 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: ["https://rooms-beta.vercel.app", "http://localhost:5173"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      "https://rooms-beta.vercel.app",
+      "http://localhost:5173"
+    ],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Welcome to the Rooms Booking API");
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/bookings", bookingRoutes);
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("❌ MongoDB Error:", err));
 
-  app.get("/", (req, res) => {
-    res.send("Welcome to the Rooms Booking API");
-  });
+const PORT = process.env.PORT || 5001;
 
-app.listen(5001, () => console.log("🚀 Server running on 5001"));
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on ${PORT}`);
+});
