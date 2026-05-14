@@ -31,13 +31,14 @@ app.use("/api/auth", authRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use("/api/bookings", bookingRoutes);
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log("❌ MongoDB Error:", err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB Connected");
 
-const PORT = process.env.PORT || 5001;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on ${PORT}`);
-});
+    app.listen(process.env.PORT || 5001, () => {
+      console.log("🚀 Server running");
+    });
+  })
+  .catch((err) => {
+    console.log("❌ MongoDB Error:", err.message);
+  });
